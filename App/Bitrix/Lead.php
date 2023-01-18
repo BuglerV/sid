@@ -74,9 +74,6 @@ class Lead implements ModelInterface
 		self::postCurlRequest('crm.lead.userfield.add', [
 			'FIELD_NAME' => 'IS_REPLACED',
 			'USER_TYPE_ID' => 'string',
-			'SETTINGS' => [
-				'DEFAULT_VALUE' => 'N'
-			]
 		]);
 	}
 

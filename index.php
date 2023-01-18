@@ -27,7 +27,7 @@ include 'vendor/autoload.php';
 <?php
 	$lids = Bitrix\Lead::find([
 		'select' => ['ID'],
-		'filter' => ['!UF_CRM_IS_REPLACED' => 'Y']
+		'filter' => ['!=UF_CRM_IS_REPLACED' => 'Y']
 	]);
 
 	foreach($lids as $lid) {
