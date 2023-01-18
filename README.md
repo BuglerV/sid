@@ -22,12 +22,9 @@ return [
 
 ```
 
-Так же нужно в Bitrix24 создать новое поле 'IS_REPLACED'. Либо запустить автоматически:
+Потом:
 
-```php
-
-include 'vendor/autoload.php';
-
-Bitrix\Lead::createIsReplacedCustomField();
-
+```cmd
+composer update
+php createFields.php
 ```
