@@ -8,23 +8,55 @@ use Config;
 
 class Lead implements ModelInterface
 {
+	/**
+	 * Массив полей модели.
+	 *
+	 * @var array
+	 */
 	public $fields = [];
 
+	/**
+	 * Массив измененных полей модели.
+	 *
+	 * @var array
+	 */
 	public $updatedFields = [];
 
+	/**
+	 * ID модели.
+	 *
+	 * @var int
+	 */
 	protected $id;
 
+	/**
+	 * Создает объект.
+	 *
+	 * @param integer $id
+	 * @param array $fields
+	 */
 	public function __construct(int $id, array $fields)
 	{
 		$this->id = $id;
 		$this->fields = $fields;
 	}
 
+	/**
+	 * Возвращает токен для доступа к API.
+	 *
+	 * @return string
+	 */
 	protected static function getToken(): string
 	{
 		return Config::get('bitrix.token');;
 	}
 
+	/**
+	 * Генерирует правильный URL.
+	 *
+	 * @param string $method
+	 * @return string
+	 */
 	protected static function getUrl(string $method) : string
 	{
 		$token = self::getToken();
@@ -32,6 +64,11 @@ class Lead implements ModelInterface
 		return "https://b24-56b2y7.bitrix24.ru/rest/1/$token/$method.json";
 	}
 
+	/**
+	 * Создает дополнительное поле IS_REPLACED для определения перенесена ли подель.
+	 *
+	 * @return void
+	 */
 	public static function createIsReplacedCustomField()
 	{
 		self::postCurlRequest('crm.lead.userfield.add', [
@@ -43,7 +80,14 @@ class Lead implements ModelInterface
 		]);
 	}
 
-	protected static function getCurlRequest(string $method, array $fields = [])
+	/**
+	 * Инициализирует GET запрос.
+	 *
+	 * @param string $method
+	 * @param array $fields
+	 * @return mixed
+	 */
+	protected static function getCurlRequest(string $method, array $fields = []) : mixed
 	{
 		$curl = new Curl;
 
@@ -52,7 +96,14 @@ class Lead implements ModelInterface
 		return json_decode($responce)->result;
 	}
 
-	protected static function postCurlRequest(string $method, array $fields = [])
+	/**
+	 * Инициализирует POST запрос.
+	 *
+	 * @param string $method
+	 * @param array $fields
+	 * @return mixed
+	 */
+	protected static function postCurlRequest(string $method, array $fields = []) : mixed
 	{
 		$curl = new Curl;
 		$responce = $curl->execPost( self::getUrl($method), $fields );
@@ -128,6 +179,25 @@ class Lead implements ModelInterface
 		}
 
 		return $this->fields[$field] ?? null;
+	}
+
+    /**
+     * Безопасно получает первое значение мульти поля (PHONE, EMAIL) по его ключу
+     * @param string $field Ключ поля
+     * @return mixed
+     */
+    public function getMultiFieldValue(string $field) {
+		if( isset( $this->updatedFields[$field] ) ) {
+			$value = $this->updatedFields[$field];
+		} else {
+			$value = $this->fields[$field] ?? null;
+		}
+
+		if( !is_array($value) || !count($value) ) {
+			return '';
+		}
+
+		return $value[0]->VALUE;
 	}
 
     /**

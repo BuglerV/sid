@@ -2,43 +2,7 @@
 
 include 'vendor/autoload.php';
 
-// $fields = [
-// 	'NAME' => 'Vasia',
-// 	'SECOND_NAME' => 'Pugovkin',
-// 	'LAST_NAME' => 'ssss',
-// 	'TITLE' => 'Again',
-// 	'PHONE' => [
-// 		[
-// 			'VALUE' => '123123123',
-// 			'VALUE_TYPE' => 'WORK'
-// 		]
-// 	],
-// 	'EMAIL' => [
-// 		[
-// 			'VALUE' => 'sdfsd@df.com',
-// 			'VALUE_TYPE' => 'WORK'
-// 		]
-// 	],
-// 	'COMMENTS' => 'comments....'
-// ];
-
-// $fields2 = [
-// 	'u_name' => 'Vasia',
-// 	'u_sname' => 'Alekseevich',
-// 	'u_surname' => 'Pugovkin',
-// 	'title' => 'Again',
-// 	'u_phone' => '123123123123123',
-// 	'u_email' => 'sdsfd@md.com',
-// 	'note' => 'comments....'
-// ];
-
-$lids = Bitrix\Lead::find([
-	'select' => ['ID'],
-	'filter' => ['!UF_CRM_IS_REPLACED' => 'Y']
-]);
-?>
-
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -61,6 +25,11 @@ $lids = Bitrix\Lead::find([
 			</thead>
 			<tbody>
 <?php
+	$lids = Bitrix\Lead::find([
+		'select' => ['ID'],
+		'filter' => ['!UF_CRM_IS_REPLACED' => 'Y']
+	]);
+
 	foreach($lids as $lid) {
 		$lid = Bitrix\Lead::get($lid->ID);
 
@@ -71,8 +40,8 @@ $lids = Bitrix\Lead::find([
 			<td>{$lid->getField('NAME')}</td>
 			<td>{$lid->getField('SECOND_NAME')}</td>
 			<td>{$lid->getField('LAST_NAME')}</td>
-			<td>{$lid->getField('PHONE')[0]->VALUE}</td>
-			<td>{$lid->getField('EMAIL')[0]->VALUE}</td>
+			<td>{$lid->getMultiFieldValue('PHONE')}</td>
+			<td>{$lid->getMultiFieldValue('EMAIL')}</td>
 		</tr>";
 	}
 ?>

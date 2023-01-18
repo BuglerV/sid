@@ -1,11 +1,29 @@
 <?php
 
+/**
+ * Класс для удобного получения конфигов.
+ */
 class Config
 {
+	/**
+	 * Сами настройки.
+	 *
+	 * @var array
+	 */
 	protected static $config = [];
 
+	/**
+	 * Были ли настройки загружены.
+	 *
+	 * @var boolean
+	 */
 	protected static $isConfigLoaded = false;
 
+	/**
+	 * Загружает настройки.
+	 *
+	 * @return void
+	 */
 	protected static function loadConfig()
 	{
 		self::$config = require_once(__DIR__ . '/../config/crms.php');
@@ -13,7 +31,13 @@ class Config
 		self::$isConfigLoaded = true;
 	}
 
-	public static function get(string $key)
+	/**
+	 * Возвращает конкретную настройку по ключу.
+	 *
+	 * @param string $key
+	 * @return string
+	 */
+	public static function get(string $key) : string
 	{
 		if( !self::$isConfigLoaded ) {
 			self::loadConfig();
