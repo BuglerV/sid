@@ -35,9 +35,9 @@ class Config
 	 * Возвращает конкретную настройку по ключу.
 	 *
 	 * @param string $key
-	 * @return string
+	 * @return mixed
 	 */
-	public static function get(string $key) : string
+	public static function get(string $key) : mixed
 	{
 		if( !self::$isConfigLoaded ) {
 			self::loadConfig();

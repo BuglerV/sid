@@ -87,7 +87,7 @@ class Lead implements ModelInterface
 	 * @param array $fields
 	 * @return mixed
 	 */
-	protected static function getCurlRequest(string $method, array $fields = []) : mixed
+	protected static function getCurlRequest(string $method, array $fields = [])
 	{
 		$curl = new Curl;
 
@@ -103,7 +103,7 @@ class Lead implements ModelInterface
 	 * @param array $fields
 	 * @return mixed
 	 */
-	protected static function postCurlRequest(string $method, array $fields = []) : mixed
+	protected static function postCurlRequest(string $method, array $fields = [])
 	{
 		$curl = new Curl;
 		$responce = $curl->execPost( self::getUrl($method), $fields );
